@@ -3,7 +3,9 @@
 #include "hardware/pio.h"
 #include "hardware/clocks.h"
 #include "hardware/adc.h"
+
 #include "cobra.h"
+#include "fruta.h"
 
 #include "ws2818b.pio.h"
 
@@ -109,6 +111,14 @@ void detectar_direcao(uint16_t x, uint16_t y, struct cobraCompleta* cobra) {
 
 }
 
+void verificarComida(struct cobraCompleta* cobra, struct fruta *fruta ) {
+    if (cobra->cobraPedaco[0]->x == fruta->x && cobra->cobraPedaco[0]->y == fruta->y ) {
+        crescer(cobra);
+        gerarFruta(fruta, cobra);
+    }
+
+}
+
 
 int main() {
 
@@ -127,6 +137,9 @@ int main() {
 
   struct cobraCompleta cobra;
   inicializarCobra(&cobra);
+
+  struct fruta fruta;
+  gerarFruta(&fruta, &cobra);
   
 while (true) {
   adc_select_input(0);           
@@ -137,12 +150,18 @@ while (true) {
 
   detectar_direcao(adc_x_raw, adc_y_raw, &cobra);
 
+  verificarComida(&cobra, &fruta);
+
 
     npClear();
+    npSetLED(getIndex(fruta.x, fruta.y), 25, 0, 30);
+
+
     mover(&cobra);
     for (int i = 0; i < cobra.tamanho; i++) {
-      npSetLED(getIndex(cobra.cobraPedaco[i]->x, cobra.cobraPedaco[i]->y), 25, 50, 0);
+      npSetLED(getIndex(cobra.cobraPedaco[i]->x, cobra.cobraPedaco[i]->y), 25, 25, 0);
     } 
+
     npWrite();
     sleep_ms(750);
   }

@@ -44,7 +44,7 @@ void inicializarCobra(struct cobraCompleta* cobra) {
             exit(1);
         }
     }
-    cobra->tamanho = 4;  
+    cobra->tamanho = 2;  
     cobra->direcao = 0;  
     cobra->cobraPedaco[0]->x = 0;
     cobra->cobraPedaco[0]->y = 0;
