@@ -73,13 +73,24 @@ void decidirDirecao(struct cobraCompleta* cobra) {
     }
 }
 
+void colicaoemsimesma(struct cobraCompleta *cobra) {
+    for (int i = cobra->tamanho; i >= 1; i--) {
+        
+        if (cobra->cobraPedaco[0]->x == cobra->cobraPedaco[i]->x && cobra->cobraPedaco[0]->y == cobra->cobraPedaco[i]->y) {
+            inicializarCobra(cobra);
+            break;
+        } 
+    }
+  
+}
 
 void mover(struct cobraCompleta *cobra) {
     
 
-    for (int i = cobra->tamanho; i >= 0; i--) {
-        if (i == 0) {
+    for (int i = cobra->tamanho; i > -1; i--) {
+        if (i == 0) { 
             decidirDirecao(cobra);
+            colicaoemsimesma(cobra);
 
             // parede direita
             if (cobra->cobraPedaco[i]->x == 5) {
@@ -101,10 +112,14 @@ void mover(struct cobraCompleta *cobra) {
 
             
 
-        } else {
+        }
+         else {
             cobra->cobraPedaco[i]->x = cobra->cobraPedaco[i-1]->x;
             cobra->cobraPedaco[i]->y = cobra->cobraPedaco[i-1]->y;
         }
     }
+
 }
+
+
 

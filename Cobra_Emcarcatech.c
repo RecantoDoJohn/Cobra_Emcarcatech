@@ -96,16 +96,16 @@ int getIndex(int x, int y) {
 void detectar_direcao(uint16_t x, uint16_t y, struct cobraCompleta* cobra) {
   uint16_t centro = ADC_MAX / 2;
 
-  if (y > centro + DEADZONE) {
+  if (y > centro + DEADZONE && cobra->direcao != 1) {
     cobra->direcao = 3;
   }
-  if (y < centro - DEADZONE) {
+  if (y < centro - DEADZONE && cobra->direcao != 3) {
     cobra->direcao = 1;
   }
-  if (x > centro + DEADZONE) {
+  if (x > centro + DEADZONE && cobra->direcao != 2) {
     cobra->direcao = 0;
   }
-  if (x < centro - DEADZONE) {
+  if (x < centro - DEADZONE && cobra->direcao != 0) {
     cobra->direcao = 2;
   }
 
@@ -116,7 +116,6 @@ void verificarComida(struct cobraCompleta* cobra, struct fruta *fruta ) {
         crescer(cobra);
         gerarFruta(fruta, cobra);
     }
-
 }
 
 
@@ -148,21 +147,24 @@ while (true) {
   adc_select_input(1);           
   uint adc_x_raw = adc_read();   
 
-  detectar_direcao(adc_x_raw, adc_y_raw, &cobra);
-
+  
+  
   verificarComida(&cobra, &fruta);
-
+  
+  detectar_direcao(adc_x_raw, adc_y_raw, &cobra);
+  
+  mover(&cobra);
 
     npClear();
-    npSetLED(getIndex(fruta.x, fruta.y), 25, 0, 30);
+    npSetLED(getIndex(fruta.x, fruta.y), 10, 10, 10);
 
 
-    mover(&cobra);
     for (int i = 0; i < cobra.tamanho; i++) {
       npSetLED(getIndex(cobra.cobraPedaco[i]->x, cobra.cobraPedaco[i]->y), 25, 25, 0);
     } 
 
     npWrite();
+
     sleep_ms(750);
   }
 }

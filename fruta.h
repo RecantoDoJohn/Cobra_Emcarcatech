@@ -11,7 +11,7 @@ struct fruta
 
 bool verificarSobreposicao(struct cobraCompleta* cobra, struct fruta *fruta, int x, int y) {
     for (int i = cobra->tamanho; i >= 0; i--) {
-        if (cobra->cobraPedaco[0]->x = x && cobra->cobraPedaco[0]->y == y ) {
+        if (cobra->cobraPedaco[0]->x == x && cobra->cobraPedaco[0]->y == y ) {
             return false;
             break;
         } 
