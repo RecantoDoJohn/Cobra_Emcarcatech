@@ -35,7 +35,13 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(Cobra_Emcarcatech Cobra_Emcarcatech.c )
+add_executable(Cobra_Emcarcatech   
+    app/Cobra_Emcarcatech.c 
+    src/cobra.c
+    inc/cobra.h
+    src/fruta.c
+    inc/fruta.h
+    )
 
 pico_set_program_name(Cobra_Emcarcatech "Cobra_Emcarcatech")
 pico_set_program_version(Cobra_Emcarcatech "0.1")
