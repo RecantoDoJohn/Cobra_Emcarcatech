@@ -23,7 +23,7 @@ void crescer(cobraCompleta* cobra) {
     cobra->tamanho++;
 }
 
-
+// responsavel por definir os valores iniciais da cobra
 void inicializarCobra(cobraCompleta* cobra) {
     for (int i = 0; i < 25; i++) {
         cobra->cobraPedaco[i] = (parteCobra*)malloc(sizeof(parteCobra));
@@ -39,7 +39,7 @@ void inicializarCobra(cobraCompleta* cobra) {
     
 }
 
-
+// verifica a direcao da cobra
 void decidirDirecao(cobraCompleta* cobra) {
     switch (cobra->direcao)
     {
@@ -61,6 +61,7 @@ void decidirDirecao(cobraCompleta* cobra) {
     }
 }
 
+// verifica a colisao na propria cobra
 void colicaoemsimesma(cobraCompleta *cobra) {
     for (int i = cobra->tamanho; i >= 1; i--) {
         
@@ -69,12 +70,10 @@ void colicaoemsimesma(cobraCompleta *cobra) {
             break;
         } 
     }
-  
 }
 
+// faz a cobra se mover
 void mover(cobraCompleta *cobra) {
-    
-
     for (int i = cobra->tamanho; i > -1; i--) {
         if (i == 0) { 
             decidirDirecao(cobra);
@@ -97,9 +96,6 @@ void mover(cobraCompleta *cobra) {
             } else if (cobra->cobraPedaco[i]->x == -1) {
                 cobra->cobraPedaco[i]->x = 4;
             }
-
-            
-
         }
          else {
             cobra->cobraPedaco[i]->x = cobra->cobraPedaco[i-1]->x;

@@ -9,3 +9,5 @@ typedef struct {
 bool verificarSobreposicao(cobraCompleta* cobra, fruta *fruta, int x, int y);
 
 void gerarFruta(fruta *fruta, cobraCompleta* cobra);
+
+void verificarComida(cobraCompleta* cobra, fruta *fruta );

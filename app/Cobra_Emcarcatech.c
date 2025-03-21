@@ -41,7 +41,7 @@ void npInit(uint pin) {
   sm = pio_claim_unused_sm(np_pio, false);
   if (sm < 0) {
     np_pio = pio1;
-    sm = pio_claim_unused_sm(np_pio, true); // Se nenhuma máquina estiver livre, panic!
+    sm = pio_claim_unused_sm(np_pio, true); 
   }
 
   // Inicia programa na máquina PIO obtida.
@@ -55,18 +55,14 @@ void npInit(uint pin) {
   }
 }
 
-/**
- * Atribui uma cor RGB a um LED.
- */
+// Atribui uma cor RGB a um LED.
 void npSetLED(const uint index, const uint8_t r, const uint8_t g, const uint8_t b) {
   leds[index].R = r;
   leds[index].G = g;
   leds[index].B = b;
 }
 
-/**
- * Limpa o buffer de pixels.
- */
+// Limpa o buffer de pixels.
 void npClear() {
   for (uint i = 0; i < LED_COUNT; ++i)
     npSetLED(i, 0, 0, 0);
@@ -82,7 +78,7 @@ void npWrite() {
   sleep_us(100); // Espera 100us, sinal de RESET do datasheet.
 }
 
-
+// transforma uma posicao x y no index da led desejada
 int getIndex(int x, int y) {
     if (y % 2 == 0) {
         return 24-(y * 5 + x); 
@@ -92,7 +88,7 @@ int getIndex(int x, int y) {
 }
 
 
-
+// verifica a posicao do direcional e muda o valor direcao da cobra
 void detectar_direcao(uint16_t x, uint16_t y, cobraCompleta* cobra) {
   uint16_t centro = ADC_MAX / 2;
 
@@ -111,16 +107,10 @@ void detectar_direcao(uint16_t x, uint16_t y, cobraCompleta* cobra) {
 
 }
 
-void verificarComida(cobraCompleta* cobra, fruta *fruta ) {
-    if (cobra->cobraPedaco[0]->x == fruta->x && cobra->cobraPedaco[0]->y == fruta->y ) {
-        crescer(cobra);
-        gerarFruta(fruta, cobra);
-    }
-}
-
 
 int main() {
 
+  // inicializacao dos componentes
   stdio_init_all();
   adc_init();
 
@@ -137,25 +127,24 @@ int main() {
   fruta fruta;
   gerarFruta(&fruta, &cobra);
   
-while (true) {
-  adc_select_input(0);           
-  uint adc_y_raw = adc_read();   
+  while (true) {
+    // verifica a posicao do analogico
+    adc_select_input(0);           
+    uint adc_y_raw = adc_read();   
 
-  adc_select_input(1);           
-  uint adc_x_raw = adc_read();   
+    adc_select_input(1);           
+    uint adc_x_raw = adc_read();   
 
-  
-  
-  verificarComida(&cobra, &fruta);
-  
-  detectar_direcao(adc_x_raw, adc_y_raw, &cobra);
-  
-  mover(&cobra);
+    verificarComida(&cobra, &fruta);
+    
+    detectar_direcao(adc_x_raw, adc_y_raw, &cobra);
+    
+    mover(&cobra);
 
     npClear();
-    npSetLED(getIndex(fruta.x, fruta.y), 10, 10, 10);
+    npSetLED(getIndex(fruta.x, fruta.y), 30, 5, 5);
 
-
+    // insere cada pedaco da cobra em sua determinada posicao na matriz de LEDs
     for (int i = 0; i < cobra.tamanho; i++) {
       npSetLED(getIndex(cobra.cobraPedaco[i]->x, cobra.cobraPedaco[i]->y), 50, 0, 10);
     } 
